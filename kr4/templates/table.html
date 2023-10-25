@@ -1,0 +1,172 @@
+{% extends 'layout.html' %}
+
+{% block title %}Runge-Kutta Calculator{% endblock %}
+
+{% block h %}Go back to Calculator{% endblock %}
+
+{% block content %}
+  {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+  {% endif %}
+
+<table class="blueTable" >
+	<thead>
+		<tr>
+			<th> x0 </th>
+			<th> y0 </th>
+			<th> yn </th>
+			<th> K </th>
+            <th> K1 </th>
+			<th> K2 </th>
+			<th> K3 </th>
+			<th> K4 </th>
+            <th> Analytical Value </th>
+            <th> Error Rate</th>
+
+		</tr>
+	</thead>
+
+	<tbody>
+		{% for i in listVal %}
+			<tr>
+				<td>{{i.0}}</td>
+				<td>{{i.1}}</td>
+				<td>{{i.2}}</td>
+				<td>{{i.3}}</td>
+                 <td>{{i.4}}</td>
+				<td>{{i.5}}</td>
+				<td>{{i.6}}</td>
+				<td>{{i.7}}</td>
+                 <td>{{i.8}}</td>
+                 <td>{{i.9}}</td> <!-- change colour of thi to green if > 0 else red } -->
+
+			</tr>
+		{% endfor %}
+	</tbody>
+
+</table>
+
+    <!-- Adding graph here -->
+
+<div id="chart_div" style="width: 600px; height: 500px"></div>
+
+     <script type="text/javascript">
+     google.charts.load('current', {'packages':['line', 'corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      var chartDiv = document.getElementById('chart_div');
+
+      var data = new google.visualization.DataTable();
+      data.addColumn('number', 'Xn');
+      data.addColumn('number', "Numerical (RK4) Values");
+      data.addColumn('number', "Analytical Values");
+
+
+      var newArr = [];
+
+      {% for item in listVal %}
+          subArr = [{{ item.0 }},  {{ item.1 }}, {{ item.8 }}];
+          newArr.push(subArr);
+      {% endfor %}
+
+       console.log(newArr[67]);
+       data.addRows(newArr);
+
+      {#        data2.addRows([#}
+      {#  [0,  -.5,  5.7],#}
+      {#  [1,   .4,  8.7],#}
+      {#  [2,   .5,   12],#}
+      {#  [3,  2.9, 15.3],#}
+      {#  [4,  6.3, 18.6]#}
+      {#]);#}
+
+      var materialOptions = {
+        chart: {
+          title: 'Numerical vs Analytical'
+        },
+        width: 700,
+        height: 500,
+        series: {
+          // Gives each series an axis name that matches the Y-axis below.z
+          0: {axis: 'Values'},
+          1: {axis: 'Results'}
+        },
+        axes: {
+          // Adds labels to each axis; they don't have to match the axis names.
+          y: {
+            Results: {label: 'Analytical Values'},
+            Values: {label: 'Numerical (RK4) Values'}
+          }
+        }
+      };
+
+      function drawMaterialChart() {
+        var materialChart = new google.charts.Line(chartDiv);
+        materialChart.draw(data, materialOptions);
+      }
+
+      drawMaterialChart();
+    }
+
+</script>
+
+
+<!--
+<script type="text/javascript">
+
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Value', 'Actual Values', 'RK4 Values'],
+          [{{ listVal.0.0 }},  {{ listVal.0.1 }}, {{ listVal.0.8 }}],
+          [{{ listVal.1.0 }},  {{ listVal.1.1 }}, {{ listVal.1.8 }}],
+          [{{ listVal.2.0 }},  {{ listVal.2.1 }}, {{ listVal.2.8 }}],
+          [{{ listVal.3.0 }},  {{ listVal.3.1 }}, {{ listVal.3.8 }}],
+          [{{ listVal.4.0 }},  {{ listVal.4.1 }}, {{ listVal.4.8 }}],
+          [{{ listVal.5.0 }},  {{ listVal.5.1 }}, {{ listVal.5.8 }}],
+          [{{ listVal.6.0 }},  {{ listVal.6.1 }}, {{ listVal.6.8 }}],
+          [{{ listVal.7.0 }},  {{ listVal.7.1 }}, {{ listVal.7.8 }}],
+          [{{ listVal.8.0 }},  {{ listVal.8.1 }}, {{ listVal.8.8 }}],
+          [{{ listVal.9.0 }},  {{ listVal.9.1 }}, {{ listVal.9.8 }}],
+          [{{ listVal.10.0 }},  {{ listVal.10.1 }}, {{ listVal.10.8 }}]
+        ]);
+
+        var options = {
+          title: 'Equation values',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(data, options);
+      }
+</script>
+-->
+<style>
+.blueTable {
+    position: absolute;
+    left: 50px;
+    top: 100px;
+    overflow-y: scroll; /* Show vertical scrollbar */
+    overflow-x: scroll; /* Show horizontal scrollbar */
+
+}
+#chart_div{
+    position: absolute;
+    left: 800px;
+    top: 120px;}
+
+
+</style>
+
+
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'layout.html' %}
+
+{% block title %}Runge-Kutta Calculator{% endblock %}
+
+{% block content %}
+
+  <div class="container">  
+    <form method="post" id="contact" >
+      {% csrf_token %}
+      <h3>Runge-Kutta Calculator 4th Order</h3>
+      <fieldset>
+    	 <legend>Enter the Numerical Function:</legend>
+        <input placeholder="f ( x , y ) = . . ." type="text" tabindex="1" value="x+y" autofocus name = "f" list="suggested-equations" />
+		<datalist id="suggested-equations">
+			<option value="x+y">
+			<option value="x+y*2-3">
+			<option value="exp(x+y)">
+			<option value="5/exp(x+y)">
+			<option value="x+y+X">
+		</datalist>
+		
+      </fieldset>
+
+      <fieldset>
+        <legend>Enter Initial Conditions:</legend>
+        <input placeholder="x0 = . . ." type="text" tabindex="1" required name="x0">
+        <input placeholder="y0 = . . ." type="text" tabindex="1" required name="y0">
+      </fieldset>
+
+      <fieldset>
+        <legend>Enter Xn:</legend>
+        <input placeholder="xn = . . ." type="text" tabindex="1" required name="xn">
+      </fieldset>
+
+      <fieldset>
+        <legend>Enter Number of Steps:</legend>
+        <input placeholder="step(s) = . . ." type="text" tabindex="1" required name="step">
+      </fieldset>
+
+
+      <fieldset>
+        <legend>Enter the Analytical Function:</legend>
+        <input placeholder="f ( x , y ) = . . ." type="text" tabindex="1"  name="origEq">
+          <datalist id="suggested-equations">
+			<option value="exp(x) -x - 1">
+			<option value="2*exp(x)-x-1">
+			<option value="exp(x+y)">
+			<option value="5/exp(x+y)">
+			<option value="x+y+X">
+              </datalist>
+      </fieldset>
+
+
+      <fieldset>
+        <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Calculate</button>
+      </fieldset>
+    </form>
+  </div>
+<div class="container">
+		<h3 class="redHeading boldHeader">
+		Instructions: <br><br>
+                        1. Make sure to write the formula clearly, using brackets.<br><br>
+
+		                2. Step Size is used for the value h<br><br>
+
+		                3. Replace t and u variables with x and y. For example t = x and u = y<br><br>
+		</h3>
+	</div>
+    <style>
+.redHeading {
+    color: black;
+    position: fixed;
+    left: 1200px;
+    top: 250px;}
+
+</style>
+{% endblock %}
